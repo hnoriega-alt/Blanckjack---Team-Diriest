@@ -16,25 +16,8 @@ López Forero, Juan David
 
 
 ¿COMO JUGAR?
-Abre tu terminal o consola (como cmd, PowerShell, Terminal en Mac/Linux).
-Navega a la carpeta exacta donde guardaste los tres archivos: Juego.java, VistaJuego.java y ControladorJuego.java.
 
-(Puedes usar el comando cd ruta/a/tu/carpeta)
-Escribe el siguiente comando y presiona Enter. Solo necesitas compilar ControladorJuego.java, ya que este "depende" de los otros dos y el compilador los encontrará:
-
-Bash
-
-javac ControladorJuego.java
-Si no da ningún error, ¡perfecto! Verás que se crearon nuevos archivos (.class) en tu carpeta.
-
-Esto es lo que harás cada vez que quieras jugar.
-
-En la misma terminal, y en la misma carpeta, escribe el siguiente comando y presiona Enter:
-
-Bash
-
-java ControladorJuego
-
+Descarga el juego directamente desde aca.
 
 ¡Se abrirá la ventana del juego! Así es como funciona:
 
