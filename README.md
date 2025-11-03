@@ -7,7 +7,6 @@ Martínez Pérez,
 Javier Eduaro	Montaño Rojas,
 Mateo Leonardo
 Noriega Lozano, Héctor Andrés Junior
-Gonzalez Ospina, Julian Steven
 López Forero, Juan David
 
 
