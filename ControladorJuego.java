@@ -1,153 +1,115 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-// NO importamos Juego.Jugador ni Juego.Crupier
 
-/**
- * Actúa como intermediario entre el Modelo (Juego) y la Vista (VistaJuego).
- * (Esta clase DEBE estar en su propio archivo "ControladorJuego.java")
- */
 public class ControladorJuego implements ActionListener {
-    
+
     private Juego modelo;
-    private VistaJuego vista;
-    
-    public ControladorJuego(Juego modelo, VistaJuego vista) {
+    private VentanaPrincipal ventana;
+    private VistaInicio vistaInicio;
+    private VistaReglas vistaReglas;
+    private VistaJuego vistaJuego;
+
+    public ControladorJuego(Juego modelo, VentanaPrincipal ventana) {
         this.modelo = modelo;
-        this.vista = vista;
-        
-        this.vista.agregarListeners(this);
-        
-        iniciarNuevaRonda();
+        this.ventana = ventana;
+
+        vistaInicio = new VistaInicio();
+        vistaReglas = new VistaReglas();
+        vistaJuego = new VistaJuego();
+
+        vistaInicio.agregarListeners(this);
+        vistaReglas.agregarListeners(this);
+        vistaJuego.agregarListeners(this);
+
+        ventana.mostrarPanel(vistaInicio);
+        // mostrar estado inicial en juego (sin cartas hasta nueva ronda)
+        vistaJuego.actualizar(modelo.getEstado());
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        String comando = e.getActionCommand();
-        
-        if (modelo.isRondaTerminada()) {
-            return;
-        }
+        String cmd = e.getActionCommand();
 
-        switch (comando) {
-            case "Pedir":
-                modelo.jugadorPedirCarta();
-                actualizarVistaCompleta(false);
-                
-                if (modelo.getJugador().sePaso()) {
-                    resolverRonda(false);
-                }
+        switch (cmd) {
+
+            case "JUGAR":
+                ventana.mostrarPanel(vistaJuego);
+                vistaJuego.actualizar(modelo.getEstado());
                 break;
-                
-            case "Plantarse":
-                resolverRonda(true);
+
+            case "REGLAS":
+                ventana.mostrarPanel(vistaReglas);
                 break;
-                
-            case "Doblar":
-                vista.mostrarMensaje("Opción 'Doblar' no implementada.");
+
+            case "CREDITOS":
+                JOptionPane.showMessageDialog(ventana,
+                        "Créditos:\nCarrillo Martínez, Santiago Andrés\nMartínez Pérez, Javier Eduardo\nMontaño Rojas, Mateo Leonardo\nNoriega Lozano, Héctor Andrés\nLópez Forero, Juan David\nProyecto POO - Blackjack 21",
+                        "Créditos", JOptionPane.PLAIN_MESSAGE);
                 break;
-                
-            case "Dividir":
-                vista.mostrarMensaje("Opción 'Dividir' no implementada.");
+
+            case "VOLVER_MENU":
+                ventana.mostrarPanel(vistaInicio);
                 break;
-        }
-    }
-    
-    private void iniciarNuevaRonda() {
-        int apuesta = pedirApuesta();
-        if (apuesta == 0) {
-             System.exit(0);
-        }
 
-        modelo.iniciarRondaGUI(apuesta);
-        
-        if (modelo.getJugador().getMano().esBlackjack()) {
-            actualizarVistaCompleta(false);
-            resolverRonda(true);
-        } else {
-            actualizarVistaCompleta(false);
-            vista.setBotonesHabilitados(true, true, false, false); 
-        }
-    }
-    
-    private void resolverRonda(boolean esPlantarse) {
-        String mensajeResultado;
-        
-        if (esPlantarse) {
-            mensajeResultado = modelo.jugadorPlantarseYResolver();
-        } else {
-            mensajeResultado = modelo.jugadorSePasaResolver();
-        }
-
-        actualizarVistaCompleta(true); 
-        
-        vista.setBotonesHabilitados(false, false, false, false);
-        
-        vista.mostrarMensaje(mensajeResultado);
-        
-        if (modelo.getJugador().getSaldo() > 0) {
-            int opcion = JOptionPane.showConfirmDialog(vista,
-                "¿Jugar otra ronda?\nSaldo actual: $" + modelo.getJugador().getSaldo(),
-                "Ronda Terminada",
-                JOptionPane.YES_NO_OPTION);
-                
-            if (opcion == JOptionPane.YES_OPTION) {
-                iniciarNuevaRonda();
-            } else {
-                System.exit(0);
-            }
-        } else {
-            vista.mostrarMensaje("Te has quedado sin saldo. ¡Gracias por jugar!");
-            System.exit(0);
-        }
-    }
-
-    /**
-     * CORRECCIÓN: Usamos "Juego.Jugador" y "Juego.Crupier".
-     */
-    private void actualizarVistaCompleta(boolean mostrarTodaCrupier) {
-        // CORRECCIÓN: Calificación completa
-        Juego.Jugador j = modelo.getJugador();
-        Juego.Crupier c = modelo.getCrupier();
-        vista.actualizarVista(j.getMano(), c.getMano(), j.getSaldo(), mostrarTodaCrupier);
-    }
-    
-    private int pedirApuesta() {
-        while (true) {
-            String apuestaStr = JOptionPane.showInputDialog(
-                vista, 
-                "Saldo actual: $" + modelo.getJugador().getSaldo() + "\nIntroduce tu apuesta:", 
-                "Nueva Ronda", 
-                JOptionPane.PLAIN_MESSAGE
-            );
-
-            if (apuestaStr == null) { 
-                return 0; 
-            }
-
-            try {
-                int apuesta = Integer.parseInt(apuestaStr);
-                if (apuesta > 0 && apuesta <= modelo.getJugador().getSaldo()) {
-                    return apuesta;
-                } else if (apuesta > modelo.getJugador().getSaldo()) {
-                    vista.mostrarMensaje("No tienes saldo suficiente.");
+            case "CONFIRMAR_APUESTA":
+                int ap = vistaJuego.leerApuesta();
+                if (ap <= 0) {
+                    vistaJuego.mostrarDialogo("Ingresa una apuesta válida.");
+                } else if (ap > modelo.getSaldo()) {
+                    vistaJuego.mostrarDialogo("Saldo insuficiente.");
                 } else {
-                    vista.mostrarMensaje("La apuesta debe ser mayor que 0.");
+                    modelo.establecerApuesta(ap);
+                    vistaJuego.actualizar(modelo.getEstado());
+                    vistaJuego.mostrarDialogo("Apuesta establecida: $" + ap);
                 }
-            } catch (NumberFormatException e) {
-                vista.mostrarMensaje("Por favor, introduce un número válido.");
-            }
+                break;
+
+            case "NUEVA_RONDA":
+                modelo.nuevaRonda();
+                vistaJuego.actualizar(modelo.getEstado());
+                if (modelo.isRondaTerminada()) {
+                    // Ronda finalizó al repartir (ej. blackjack)
+                    JOptionPane.showMessageDialog(ventana, modelo.getEstado().getMensaje());
+                }
+                break;
+
+            case "PEDIR":
+                // antes de pedir, guardamos tamaño para detectar nueva carta
+                int tamAntes = modelo.getEstado().getManoJugador().size();
+                modelo.jugadorPedir();
+                // si la ronda no terminó y hay carta nueva, la añadimos solo a la vista
+                int tamDespues = modelo.getEstado().getManoJugador().size();
+                if (tamDespues > tamAntes) {
+                    // añadimos la última carta visualmente (evita duplicados)
+                    Juego.Carta ultima = modelo.getEstado().getManoJugador().get(tamDespues - 1);
+                    vistaJuego.añadirCartaNuevaJugador(ultima);
+                }
+                vistaJuego.actualizar(modelo.getEstado());
+                if (modelo.isRondaTerminada()) {
+                    JOptionPane.showMessageDialog(ventana, modelo.getEstado().getMensaje());
+                }
+                break;
+
+            case "PLANTARSE":
+                modelo.jugadorPlantarse();
+                vistaJuego.actualizar(modelo.getEstado());
+                if (modelo.isRondaTerminada()) {
+                    JOptionPane.showMessageDialog(ventana, modelo.getEstado().getMensaje());
+                }
+                break;
+
+            case "DOBLAR":
+                modelo.jugadorDoblar();
+                vistaJuego.actualizar(modelo.getEstado());
+                if (modelo.isRondaTerminada()) {
+                    JOptionPane.showMessageDialog(ventana, modelo.getEstado().getMensaje());
+                }
+                break;
+
+            default:
+                System.out.println("Acción desconocida: " + cmd);
+                break;
         }
-    }
-    
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Juego modelo = new Juego();
-                VistaJuego vista = new VistaJuego();
-                ControladorJuego controlador = new ControladorJuego(modelo, vista);
-                vista.setVisible(true);
-            }
-        });
     }
 }
