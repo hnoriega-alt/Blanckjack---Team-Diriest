@@ -16,11 +16,13 @@ López Forero, Juan David
 
 ¿COMO JUGAR?
 
-Descarga el juego directamente desde aca.
+Descarga el juego directamente desde aca(DESCARGAN EL ARCHIVO .ZIP).
 
 ¡Se abrirá la ventana del juego! Así es como funciona:
 
-Hacer tu Apuesta: Inmediatamente, aparecerá una ventana emergente pidiendo tu apuesta. Tu saldo inicial es $1000. Escribe un número (ej: 100) y haz clic en "OK".
+Hacer tu Apuesta: Inmediatamente, aparecerá en la esquina inferior izquierda un apartado pidiendo tu apuesta (Si no has puesto nada tu apuesta por defecto será de 100). Tu saldo inicial es $1000. Escribe un número (ej: 100) y haz clic en "OK".
+
+Luego de hacer la apuesta tienes que darle en la opcion iniciar una nueva partida pues no se iniciará el juego si no le dan primero a esta opción.
 
 Reparto Inicial: Verás tus dos cartas y la carta visible del Crupier. Tus botones de "Pedir" y "Plantarse" se activarán.
 
@@ -44,4 +46,4 @@ Haz clic en "Yes" (Sí) para volver a empezar (te pedirá una nueva apuesta).
 
 Haz clic en "No" para cerrar el juego.
 
-¡Eso es todo! Los botones "Doblar" y "Dividir" están ahí, pero como vimos en el código, solo mostrarán un mensaje de "no implementado" si haces clic en ellos. Por ahora hasta que podamos implementarlo correctamente. ¡GRACIAS POR JUGAR!
+¡GRACIAS POR JUGAR!
