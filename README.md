@@ -18,6 +18,8 @@ López Forero, Juan David
 
 Descarga el juego directamente desde aca(DESCARGAN EL ARCHIVO .ZIP).
 
+Dentro de la carpeta blackjack esta el archivo .jar con ese archivo abren el juego.
+
 ¡Se abrirá la ventana del juego! Así es como funciona:
 
 Hacer tu Apuesta: Inmediatamente, aparecerá en la esquina inferior izquierda un apartado pidiendo tu apuesta (Si no has puesto nada tu apuesta por defecto será de 100). Tu saldo inicial es $1000. Escribe un número (ej: 100) y haz clic en "OK".
