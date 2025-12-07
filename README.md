@@ -18,7 +18,7 @@ López Forero, Juan David
 
 Descarga el juego directamente desde aca(DESCARGAN EL ARCHIVO .ZIP).
 
-Dentro de la carpeta blackjack esta el archivo .jar con ese archivo abren el juego.
+Dentro de la carpeta blackjack esta el archivo .jar con ese archivo abren el juego (obviando que al descargarlo en .zip deben de extraerlo).
 
 ¡Se abrirá la ventana del juego! Así es como funciona:
 
